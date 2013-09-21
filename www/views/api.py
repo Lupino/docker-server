@@ -1,5 +1,5 @@
 from www import app, config, request
-from docker import _user
+from docker import user as _user
 from docker.drivers import store
 
 @app.route('/api/user/me')

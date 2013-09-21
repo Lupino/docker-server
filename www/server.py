@@ -16,11 +16,11 @@ class TulipServer(ServerAdapter):
         import tulip
         from tulip.http import WSGIServerHttpProtocol
         def wsgi_app(env, start):
-            def start_response(status_line, headerlist):
+            def start_response(status_line, headerlist, exc_info = None):
                 status_code = status_line.split(' ', 1)[0]
                 length = dict(headerlist).get('Content-Length', 0)
                 logger.info('{} {} {} {}'.format(env['REQUEST_METHOD'], env['RAW_URI'], status_code, length))
-                return start(status_line, headerlist)
+                return start(status_line, headerlist, exc_info = exc_info)
             return handler(env, start_response)
         loop = tulip.get_event_loop()
         f = loop.start_serving(

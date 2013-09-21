@@ -14,8 +14,8 @@ def create(image, server_port, ssh_port):
         'container_id': container_id,
         'ssh_port': ssh_port,
         'server_port': server_port,
-        'created_at': now
-        'stop_at': now + 60 * 60
+        'created_at': now,
+        'stop_at': now + 60 * 60,
         'last_startup': now
     })
 
