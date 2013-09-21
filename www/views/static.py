@@ -1,7 +1,7 @@
 import os
 from www import app, static_file
 
-@app.route('/static/:path#(style.css|angular.js)#')
+@app.route('/static/:path#(.*)#')
 def server_static(path):
     return static_file(path,  root = os.path.join(os.path.dirname(__file__), '../static'))
 
