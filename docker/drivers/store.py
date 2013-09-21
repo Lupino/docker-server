@@ -7,7 +7,7 @@ class Container(Model):
         CREATE TABLE IF NOT EXISTS `{}container` (
           `container_id` varchar(32) NOT NULL,
           `ssh_port` int(5) unsigned NOT NULL DEFAULT '0',
-          `www_port` int(5) unsigned NOT NULL DEFAULT '0',
+          `server_port` int(5) unsigned NOT NULL DEFAULT '0',
           `created_at` int(10) unsigned NOT NULL DEFAULT '0',
           `stop_at` int(10) unsigned NOT NULL DEFAULT '0',
           `last_startup` int(10) unsigned NOT NULL DEFAULT '0',
@@ -17,7 +17,7 @@ class Container(Model):
     columns = [
         {'name': 'container_id', 'type': 'str', 'primary': True},
         {'name': 'ssh_port',     'type': 'int'},
-        {'name': 'www_port',     'type': 'int'},
+        {'name': 'server_port',     'type': 'int'},
         {'name': 'created_at',   'type': 'int'},
         {'name': 'stop_at',      'type': 'int'},
         {'name': 'last_startup', 'type': 'int'}
