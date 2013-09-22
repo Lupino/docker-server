@@ -1,22 +1,42 @@
 from www import app, config, request
-from docker import user as _user
+from docker import user as _user, container
 from docker.drivers import store
+import json
 
 @app.route('/api/user/me')
 def user_me(user):
     return user
 
+@app.post('/api/user/login')
+def user_login():
+    username = request.forms.username
+    passwd = request.forms.passwd
+    ret = _user.login(username, passwd)
+    if ret.get('user_id'):
+        app.login(ret)
+    return ret
+
 @app.route('/api/user/containers')
 def user_containers(user):
-    return _user.get_containers(user['user_id'])
+    return json.dumps(_user.get_containers(user['user_id']))
 
-@app.post('/api/user/create/cantainer')
+@app.post('/api/user/create/container')
 def user_create_container(user):
     image = request.forms.image
     container_id = _user.create_cantainer(user['user_id'], image)
+    if not container_id:
+        return {'err': 'container create fail'}
     container = store.container.find_by_id(container_id)
-    container.update({'user_id': user_id})
-    return container
+    container.update({'user_id': user['user_id']})
+    return json.dumps(container)
+
+@app.delete('/api/user/remove/container/:container_id')
+def user_create_container(container_id, user):
+    store.container.del_by_id(container_id)
+    store.user_container.del_by_id(user['user_id'], container_id)
+    container.stop(container_id)
+    container.rm(container_id)
+    return {}
 
 @app.post('/api/user/register')
 def user_register():
@@ -54,4 +74,4 @@ def stop_container(container_id, user):
 
 @app.get('/api/images')
 def images():
-    return config.images
+    return json.dumps(config.images)
