@@ -1,0 +1,21 @@
+<div id="loginform" style="margin-top: -70px; min-height: 140px;">
+    <form class="pure-form pure-form-aligned">
+        <fieldset>
+            <div class="pure-control-group">
+                <label for="name">用户名</label>
+                <input id="name" type="text" placeholder="用户名" ng-model="username" name="username">
+            </div>
+
+            <div class="pure-control-group">
+                <label for="passwd">密码</label>
+                <input id="passwd" type="password" placeholder="密码" ng-model="passwd" name="passwd">
+            </div>
+
+            <div class="pure-controls">
+                <div class="error" ng-show="err">{{err}}</div>
+                <button type="submit" class="pure-button pure-button-primary" ng-click="login()">登录</button>
+                &nbsp;&nbsp;<a href="#/register">注册</a>
+            </div>
+        </fieldset>
+    </form>
+</div>

@@ -1,0 +1,36 @@
+<div id="loginform">
+    <form class="pure-form pure-form-aligned" name="RegForm">
+        <fieldset>
+            <div class="pure-control-group">
+                <label for="name">用户名</label>
+                <input id="name" type="text" placeholder="用户名" ng-model="username" name="username" required ng-maxlength="5">
+                <span class="error" ng-show="RegForm.username.$error.required"> * </span>
+            </div>
+
+            <div class="pure-control-group">
+                <label for="passwd">密码</label>
+                <input id="passwd" type="password" placeholder="密码" ng-model="passwd" name="passwd" required>
+                <span class="error" ng-show="RegForm.passwd.$error.required"> * </span>
+            </div>
+
+            <div class="pure-control-group">
+                <label for="repasswd">重复输入密码</label>
+                <input id="repasswd" type="password" placeholder="重复输入密码" ng-model="repasswd" name="repasswd" required>
+                <span class="error" ng-show="RegForm.repasswd.$error.required"> * </span>
+                <span class="error" ng-show="notmatch"> 两次输入不一样 </span>
+            </div>
+
+            <div class="pure-control-group">
+                <label for="email">邮箱</label>
+                <input id="email" type="email" placeholder="me@example.com" ng-model="email" name="email" required>
+                <span class="error" ng-show="RegForm.email.$error.required"> * </span>
+                <span class="error" ng-show="RegForm.email.$error.email">Not valid email!</span>
+            </div>
+
+            <div class="pure-controls">
+                <div class="error" ng-show="err">{{err}}</div>
+                <button type="submit" class="pure-button pure-button-primary" ng-click="register()">注册</button>
+            </div>
+        </fieldset>
+    </form>
+</div>

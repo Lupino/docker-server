@@ -1,0 +1,65 @@
+<div class="pure-g-r">
+    <div class="header pure-u-1">
+        <div class="pure-menu pure-menu-open pure-menu-fixed pure-menu-horizontal">
+            <a class="pure-menu-heading" href="">Docker tools</a>
+
+            <ul>
+                <li class="pure-menu-selected"><a href="#/main">Main</a></li>
+                <li><a href="#/logout">Logout</a></li>
+            </ul>
+
+            <a href="#/settings" class="username">{{user.username}}</a>
+        </div>
+    </div>
+
+    <div class="sidebar pure-u">
+
+        <div class="pure-menu pure-menu-open">
+            <ul>
+                <li><a href="" ng-click="show(this)" >Container</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="pure-u-1">
+        <div id="content">
+            <form class="pure-form">
+                <fieldset>
+                    <legend>Create a container</legend>
+
+                       <select id="images" name="image" ng-model="image" ng-options="image.name for image in images">
+                       </select>
+
+                    <button type="submit" class="pure-button pure-button-primary" ng-click="create_container()">Create</button>
+                </fieldset>
+            </form>
+            <legend>Containers</legend>
+            <table class="pure-table pure-table-horizontal">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Image</th>
+                        <th>SSH_PORT</th>
+                        <th>SERVER_PORT</th>
+                        <th>Created_at</th>
+                        <th>Stop_at</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="container in containers">
+                        <td>{{container.container_id}}</td>
+                        <td>{{container.image.name}}</td>
+                        <td>{{container.ssh_port}}</td>
+                        <td>{{container.server_port}}</td>
+                        <td>{{container.createdAt}}</td>
+                        <td>{{container.stopAt}}</td>
+                        <td><button class="pure-button" ng-click="stop(container.container_id)">Stop</button></td>
+                        <td><button class="pure-button" ng-click="remove(container.container_id)">Remove</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
