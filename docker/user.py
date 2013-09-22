@@ -31,7 +31,7 @@ def register(username, passwd, repasswd, email):
     elif store.user.find_by_email(email):
         retval['type'] = 'email'
         retval['err'] = 'Email: {} 已被抢注'.format(email)
-    elif passwd == repasswd:
+    elif passwd != repasswd:
         retval['type'] = 'passwd'
         retval['err'] = '两次输入密码不一样'
     else:
