@@ -48,3 +48,10 @@ def restart(container_id):
     p = os.popen(' '.join(cmd))
 
     return p.read()
+
+def rm(container_id):
+    cmd = ['docker', 'rm', container_id]
+    p = os.popen(' '.join(cmd))
+
+    return p.read()
+
