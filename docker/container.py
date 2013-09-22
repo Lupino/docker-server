@@ -1,23 +1,33 @@
 import os
 from .drivers import store
 from time import time
+import config
 
-def create(image, server_port, ssh_port):
-    cmd = ['docker', 'run', '-d', '-p', '%s:22'%ssh_port, '%s:80'%server_port,
-            image]
+def create(image_id, server_port, ssh_port):
+    image = list(filter(lambda x: x['image_id'] == image_id, config.images))
+    if not image:
+        return None
+    image = image[0]
+    cmd = ['docker', 'run', '-d', '-p', '{}:{}'.format(ssh_port, image['ssh_port']),
+            '-p', '{}:{}'.format(server_port, image['server_port']),
+            image_id]
+
+    for c in image['cmd']:
+        cmd.append(c)
 
     p = os.popen(' '.join(cmd))
-
     container_id = p.read().strip()
-    now = int(time())
-    container_id = store.container.save({
-        'container_id': container_id,
-        'ssh_port': ssh_port,
-        'server_port': server_port,
-        'created_at': now,
-        'stop_at': now + 60 * 60,
-        'last_startup': now
-    })
+    if container_id:
+        now = int(time())
+        container_id = store.container.save({
+            'container_id': container_id,
+            'ssh_port': ssh_port,
+            'server_port': server_port,
+            'created_at': now,
+            'stop_at': now + 60 * 60,
+            'image_id': image_id,
+            'last_startup': now
+        })
 
     return container_id
 
