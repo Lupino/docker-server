@@ -2,6 +2,16 @@ from .drivers import store
 from crawl.utils import md5sum
 from . import container
 
+def login(username, passwd):
+    user = store.user.find_by_username(username)
+    if not user:
+        return {'err': '用户 {} 不存在'.format(username)}
+    if user['passwd'] == md5sum(passwd):
+        user.pop('passwd')
+        return user
+    return {'err': '用户名密码错误'}
+
+
 def register(username, passwd, repasswd, email):
     retval = {}
     if not username or not email or not passwd:
