@@ -63,10 +63,11 @@ def create_cantainer(user_id, image):
     ssh_port = store.seq.next('container_export_port')
     if ssh_port < 49153:
         ssh_port = 49153
-        store.seq.update('container_export_port', seq)
+        store.seq.update('container_export_port', ssh_port)
     server_port = store.seq.next('container_export_port')
     container_id = container.create(image, server_port, ssh_port)
-    store.user_container.save({'user_id': user_id, 'container_id': container_id})
+    if container_id:
+        store.user_container.save({'user_id': user_id, 'container_id': container_id})
     return container_id
 
 def get_containers(user_id):
