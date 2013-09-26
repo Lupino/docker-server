@@ -1,4 +1,5 @@
-from crawl.drivers.store import *
+from crawl.conf import prefix
+from crawl.drivers.model import Model
 
 class Container(Model):
     table_name = '{}container'.format(prefix)

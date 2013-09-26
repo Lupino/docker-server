@@ -26,12 +26,12 @@ def user_create_container(user):
     container_id = _user.create_cantainer(user['user_id'], image)
     if not container_id:
         return {'err': 'container create fail'}
-    container = store.container.find_by_id(container_id)
-    container.update({'user_id': user['user_id']})
-    return json.dumps(container)
+    _container = store.container.find_by_id(container_id)
+    _container.update({'user_id': user['user_id']})
+    return json.dumps(_container)
 
 @app.delete('/api/user/remove/container/:container_id')
-def user_create_container(container_id, user):
+def user_remove_container(container_id, user):
     store.container.del_by_id(container_id)
     store.user_container.del_by_id(user['user_id'], container_id)
     container.stop(container_id)
