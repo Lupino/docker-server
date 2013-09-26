@@ -4,8 +4,8 @@ from .bottle import Bottle, TEMPLATE_PATH, static_file, request, response,\
     template, redirect
 
 TEMPLATE_PATH.insert(0, os.path.join(os.path.dirname(__file__), './templates'))
-
-app = Bottle()
+from .server import TulipBottle
+app = TulipBottle()
 from . import bottle_login
 
 login_plugin = bottle_login.Plugin()
