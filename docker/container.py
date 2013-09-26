@@ -55,3 +55,13 @@ def rm(container_id):
 
     return p.read()
 
+def get_container_passwd(container_id):
+    cmd = ['docker', 'logs', container_id, "| grep Password | awk '{print $4}'"]
+    p = os.popen(' '.join(cmd))
+    passwd = p.read().strip()
+    if passwd:
+        container_id = store.container.save({
+            'container_id': container_id,
+            'passwd': passwd,
+        })
+    return passwd

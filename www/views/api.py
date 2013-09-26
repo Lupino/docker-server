@@ -72,6 +72,13 @@ def stop_container(container_id, user):
     if has:
         container.stop(container_id)
 
+@app.get('/api/container/:container_id/passwd')
+def container_passwd(container_id, user):
+    has = store.user_container.find_by_id(user['user_id'], container_id)
+    if has:
+        return container.get_container_passwd(container_id)
+    return ''
+
 @app.get('/api/images')
 def images():
     return json.dumps(config.images)

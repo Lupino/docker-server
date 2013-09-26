@@ -56,6 +56,16 @@ function MainCtrl($scope, $location, User, Container) {
     User.containers(function(err, data) {
         if (data) {
             $scope.containers = data;
+            $scope.containers.forEach(function(container){
+                if (!container.passwd) {
+                    var index = $scope.containers.indexOf(container);
+                    Container.get_passwd(container.container_id, function(err, data) {
+                        if (data) {
+                            $scope.containers[index].passwd = data;
+                        }
+                    });
+                }
+            });
         }
     });
     // Container.images(function(err, data){
@@ -71,6 +81,14 @@ function MainCtrl($scope, $location, User, Container) {
         User.create_container($scope.image.image_id, function(err, data) {
             if (data) {
                 $scope.containers.push(data);
+                if (!data.passwd) {
+                    var index = $scope.containers.indexOf(data);
+                    Container.get_passwd(data.container_id, function(err, data) {
+                        if (data) {
+                            $scope.containers[index].passwd = data;
+                        }
+                    });
+                }
             }
         });
     };

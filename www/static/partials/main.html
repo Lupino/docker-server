@@ -42,6 +42,7 @@
                         <th>SERVER_PORT</th>
                         <th>Created_at</th>
                         <th>Stop_at</th>
+                        <th>Password</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -55,6 +56,7 @@
                         <td>{{container.server_port}}</td>
                         <td>{{container.createdAt}}</td>
                         <td>{{container.stopAt}}</td>
+                        <td>{{container.passwd}}</td>
                         <td><button class="pure-button" ng-click="stop(container.container_id)">Stop</button></td>
                         <td><button class="pure-button" ng-click="remove(container.container_id)">Remove</button></td>
                     </tr>

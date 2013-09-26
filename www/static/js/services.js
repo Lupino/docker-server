@@ -161,6 +161,17 @@ factory('Container', function($http){
             }).error(function(data, status){
                 callback(status);
             });
+        },
+        get_passwd: function(container_id, callback){
+            $http.get('/api/container/' + container_id +'/passwd').success(function(data, status){
+                if (data.err){
+                    callback(data.err, null);
+                }else{
+                    callback(null, data);
+                }
+            }).error(function(data, status){
+                callback(status);
+            });
         }
     }
 
