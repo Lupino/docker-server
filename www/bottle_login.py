@@ -13,9 +13,10 @@ class LoginPlugin(object):
     '''
     name = 'login'
 
-    def __init__(self, session_key='user', keyword='user'):
+    def __init__(self, session_key='user', keyword='user', redirect_to = None):
         self.keyword = keyword
         self.session_key = session_key
+        self.redirect_to = redirect_to
         self.app = None
         self.session = {}
     def setup(self, app):
@@ -48,6 +49,7 @@ class LoginPlugin(object):
         conf = context['config'].get('login') or {}
         keyword = conf.get('keyword', self.keyword)
         session_key = conf.get('session_key', self.session_key)
+        redirect_to = conf.get('redirect_to', self.redirect_to)
         args = inspect.getargspec(context['callback'])[0]
         if keyword not in args:
             return callback
@@ -56,6 +58,8 @@ class LoginPlugin(object):
             kwargs[keyword] = self.session.get(session_key)
             if kwargs[keyword]:
                 return callback(*args, **kwargs)
+            if redirect_to:
+                return redirect(redirect_to)
             return {'err': 'not permission'}
 
         # Replace the route callback with the wrapped one.

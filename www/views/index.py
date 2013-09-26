@@ -1,4 +1,4 @@
-from www import app, config, request, template
+from www import app, config, template
 
 @app.route('/')
 def index():
