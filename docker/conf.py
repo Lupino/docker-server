@@ -20,15 +20,7 @@ store_path = 'run/%s/cache.db'%prefix
 # cache_timeout = 500
 # lru_cache = False
 
-images = [
-    {
-        'image_id': 'lupino/ubuntu',
-        'ssh_port': '22',
-        'server_port': 80,
-        'name': 'Ubuntu 12.04',
-        'cmd': ['/bin/bash'],
-    }
-]
+images = []
 
 HOME_ROOT = '/'
 
