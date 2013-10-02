@@ -1,6 +1,7 @@
 from .drivers import store
-from crawl.utils import md5sum
+from .utils import md5sum
 from . import container
+from . import conf
 
 def login(username, passwd):
     user = store.user.find_by_username(username)
@@ -60,7 +61,7 @@ def change_passwd(user_id, oldpasswd, newpasswd, renewpasswd):
     return retval
 
 def create_cantainer(user_id, image_id):
-    image = list(filter(lambda x: x['image_id'] == image_id, config.images))
+    image = list(filter(lambda x: x['image_id'] == image_id, conf.images))
     if image:
         image = image[0]
         container_id = container.create(image)

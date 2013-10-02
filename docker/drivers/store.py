@@ -1,5 +1,6 @@
-from crawl.conf import prefix
-from crawl.drivers.model import Model
+from docker.conf import prefix
+from .model import Model, use_mysql, query
+from docker.logging import logger
 
 class Container(Model):
     table_name = '{}container'.format(prefix)
@@ -37,3 +38,41 @@ class User(Model):
     ]
 
 user = User()
+
+class Sequence(Model):
+    table_name = 'sequence'
+
+    columns = [
+        {'name': 'name', 'type': 'str', 'primary': True, 'length': 20},
+        {'name': 'id',   'type': 'int', 'default': 0}
+    ]
+
+    @query(autocommit=True)
+    def next(self, name, cur):
+        name = '%s:%s'%(prefix, name)
+        last_id = 0
+        if use_mysql:
+            sql = 'INSERT INTO `sequence` (`name`) VALUES (?) ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id` + 1)'
+            args = (name, )
+            logger.debug('Query> SQL: %s | ARGS: %s'%(sql, args))
+            cur.execute(sql, args)
+            last_id = cur.lastrowid
+        else:
+            seq = self.find_by_id(name)
+            if seq and seq['id']:
+                sql = 'UPDATE `sequence` SET `id` = `id` + 1 WHERE `name` = ?'
+                args = (name, )
+                logger.debug('Query> SQL: %s | ARGS: %s'%(sql, args))
+                cur.execute(sql, args)
+            else:
+                self.save({'name': name})
+
+            seq = self.find_by_id(name)
+            last_id = seq['id']
+        return last_id
+
+    def update(self, name, id):
+        name = '{}:{}'.format(prefix, name)
+        return self.save({'name': name, 'id': id})
+
+seq = Sequence()

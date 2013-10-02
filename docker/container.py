@@ -1,7 +1,6 @@
 import os
 from .drivers import store
 from time import time
-import config
 
 def create(image):
     cmd = ['docker', 'run', '-d']
@@ -28,6 +27,9 @@ def create(image):
     cmd.extend(image.get('cmd', []))
 
     p = os.popen(' '.join(cmd))
+
+    now = int(time())
+
     info['container_id'] = container_id = p.read().strip()
     info['created_at'] = now
     info['stop_at'] = now + 3600
