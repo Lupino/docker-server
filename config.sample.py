@@ -28,6 +28,6 @@ images = [
         'ssh_port': '22',
         'server_port': 80,
         'name': 'Ubuntu 12.04',
-        'cmd': ['/bin/bash'],
+        'cmd': ['/bin/bash', '/src/startup.sh'],
     }
 ]
