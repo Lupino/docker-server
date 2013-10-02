@@ -46,7 +46,7 @@ class query:
             return retval
 
         def warpper(*args, **kws):
-            if self.keyword not in kws.keys():
+            if self._keyword not in kws.keys():
                 conn = sqlite.connect(PATH)
 
                 conn.row_factory = dict_factory
