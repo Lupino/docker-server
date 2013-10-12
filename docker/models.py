@@ -1,8 +1,8 @@
 from docker.conf import prefix
-from .model import Model, use_mysql, query
+from lee import Model, query, Table, conf as lee_conf
 from docker.logging import logger
 
-class Container(Model):
+class _Container(Model):
     table_name = '{}container'.format(prefix)
 
     columns = [
@@ -15,9 +15,9 @@ class Container(Model):
         {'name': 'stop_at',      'type': 'int', 'unsigned': True, 'length': 10, 'default': 0},
     ]
 
-container = Container()
+Container = Table(_Container)
 
-class UserContainer(Model):
+class _UserContainer(Model):
     table_name = '{}user_container'.format(prefix)
 
     columns = [
@@ -25,9 +25,9 @@ class UserContainer(Model):
         {'name': 'container_id', 'type': 'str', 'length': 32, 'primary': True, 'unique': True}
     ]
 
-user_container = UserContainer()
+UserContainer = Table(_UserContainer)
 
-class User(Model):
+class _User(Model):
     table_name = '{}user'.format(prefix)
 
     columns = [
@@ -37,7 +37,7 @@ class User(Model):
         {'name': 'email',    'type': 'str', 'length': 100, 'unique': True}
     ]
 
-user = User()
+User = Table(_User)
 
 class Sequence(Model):
     table_name = 'sequence'
@@ -49,30 +49,30 @@ class Sequence(Model):
 
     @query(autocommit=True)
     def next(self, name, cur):
-        name = '%s:%s'%(prefix, name)
+        name = '{}:{}'.format(prefix, name)
         last_id = 0
-        if use_mysql:
+        if lee_conf.use_mysql:
             sql = 'INSERT INTO `sequence` (`name`) VALUES (?) ON DUPLICATE KEY UPDATE `id` = LAST_INSERT_ID(`id` + 1)'
             args = (name, )
             logger.debug('Query> SQL: %s | ARGS: %s'%(sql, args))
             cur.execute(sql, args)
             last_id = cur.lastrowid
         else:
-            seq = self.find_by_id(name)
-            if seq and seq['id']:
+            seq = self._table.find_by_id(name)
+            if seq:
                 sql = 'UPDATE `sequence` SET `id` = `id` + 1 WHERE `name` = ?'
                 args = (name, )
                 logger.debug('Query> SQL: %s | ARGS: %s'%(sql, args))
                 cur.execute(sql, args)
             else:
-                self.save({'name': name})
+                self._table.save({'name': name})
 
-            seq = self.find_by_id(name)
+            seq = self._table.find_by_id(name)
             last_id = seq['id']
         return last_id
 
-    def update(self, name, id):
+    def save(self, name, id):
         name = '{}:{}'.format(prefix, name)
-        return self.save({'name': name, 'id': id})
+        return self._table.save({'name': name, 'id': id})
 
-seq = Sequence()
+seq = Table(Sequence)()
