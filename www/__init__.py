@@ -4,7 +4,7 @@ from .bottle import TEMPLATE_PATH, static_file, request, response,\
     template, redirect
 
 TEMPLATE_PATH.insert(0, os.path.join(os.path.dirname(__file__), './templates'))
-from .server import TulipBottle
+from .asyncbottle import TulipBottle
 app = TulipBottle()
 from . import bottle_login
 

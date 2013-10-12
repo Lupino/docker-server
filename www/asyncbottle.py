@@ -7,7 +7,7 @@ import sys
 import logging
 
 import tulip
-from tulip.http import WSGIServerHttpProtocol
+from asynchttp.wsgi import WSGIServerHttpProtocol
 import inspect
 
 import itertools
@@ -34,7 +34,7 @@ class TulipServer(ServerAdapter):
                 return start(status_line, headerlist, exc_info)
             return handler(env, start_response)
         loop = tulip.get_event_loop()
-        f = loop.start_serving(
+        f = loop.create_server(
                 lambda: WSGIServerHttpProtocol(wsgi_app, loop = loop, readpayload=True),
                 self.host, self.port)
         loop.run_until_complete(f)
