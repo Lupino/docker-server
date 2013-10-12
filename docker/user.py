@@ -1,10 +1,10 @@
-from .drivers import store
+from . import models
 from .utils import md5sum
 from . import container
 from . import conf
 
 def login(username, passwd):
-    user = store.user.find_by_username(username)
+    user = models.User.find_by_username(username)
     if not user:
         return {'err': '用户 {} 不存在'.format(username)}
     if user['passwd'] == md5sum(passwd):
@@ -26,21 +26,21 @@ def register(username, passwd, repasswd, email):
     elif len(username) > 50:
         retval['type'] = 'username'
         retval['err'] = '用户名:{} 过长，应该小于50个字符'.format(username)
-    elif store.user.find_by_username(username):
+    elif models.User.find_by_username(username):
         retval['type'] = 'username'
         retval['err'] = '用户名: {} 已被抢注'.format(username)
-    elif store.user.find_by_email(email):
+    elif models.User.find_by_email(email):
         retval['type'] = 'email'
         retval['err'] = 'Email: {} 已被抢注'.format(email)
     elif passwd != repasswd:
         retval['type'] = 'passwd'
         retval['err'] = '两次输入密码不一样'
     else:
-        user_id = store.user.save({
+        user_id = models.User({
             'username': username,
             'passwd': md5sum(passwd),
             'email': email
-        })
+        }).save()
         retval['username'] = username
         retval['user_id'] = user_id
         retval['email'] = email
@@ -49,10 +49,10 @@ def register(username, passwd, repasswd, email):
 
 def change_passwd(user_id, oldpasswd, newpasswd, renewpasswd):
     retval = {}
-    user = store.user.find_by_id(user_id)
+    user = models.User.find_by_id(user_id)
     if user.passwd == md5sum(oldpasswd):
         if newpasswd and newpasswd == renewpasswd:
-            store.user.save({'user_id': user_id, 'passwd': md5sum(newpasswd)})
+            models.User({'user_id': user_id, 'passwd': md5sum(newpasswd)}).save()
         else:
             retval['err'] = '前后两次输入不一致'
     else:
@@ -66,12 +66,12 @@ def create_cantainer(user_id, image_id):
         image = image[0]
         container_id = container.create(image)
         if container_id:
-            store.user_container.save({'user_id': user_id, 'container_id': container_id})
+            models.UserContainer({'user_id': user_id, 'container_id': container_id}).save()
             return container_id
 
     return None
 
 def get_containers(user_id):
-    containers = store.user_container.find_all({'user_id': user_id})
-    return list(map(lambda x: store.container.find_by_id(x['container_id']),
+    containers = models.UserContainer.find_all({'user_id': user_id})
+    return list(map(lambda x: models.Container.find_by_id(x['container_id']),
         containers))

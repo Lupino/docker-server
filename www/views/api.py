@@ -1,6 +1,6 @@
 from www import app, config, request
 from docker import user as _user, container
-from docker.drivers import store
+from docker import models
 import json
 
 @app.route('/api/user/me')
@@ -26,14 +26,14 @@ def user_create_container(user):
     container_id = _user.create_cantainer(user['user_id'], image)
     if not container_id:
         return {'err': 'container create fail'}
-    _container = store.container.find_by_id(container_id)
+    _container = models.Container.find_by_id(container_id)
     _container.update({'user_id': user['user_id']})
     return json.dumps(_container)
 
 @app.delete('/api/user/remove/container/:container_id')
 def user_remove_container(container_id, user):
-    store.container.del_by_id(container_id)
-    store.user_container.del_by_id(user['user_id'], container_id)
+    models.Container.del_by_id(container_id)
+    models.UserContainer.del_by_id(user['user_id'], container_id)
     container.stop(container_id)
     container.rm(container_id)
     return {}
@@ -56,25 +56,25 @@ def user_passwd(user):
 
 @app.post('/api/container/start/:container_id')
 def start_container(container_id, user):
-    has = store.user_container.find_by_id(user['user_id'], container_id)
+    has = models.UserContainer.find_by_id(user['user_id'], container_id)
     if has:
         container.start(container_id)
 
 @app.post('/api/container/restart/:container_id')
 def restart_container(container_id, user):
-    has = store.user_container.find_by_id(user['user_id'], container_id)
+    has = models.UserContainer.find_by_id(user['user_id'], container_id)
     if has:
         container.restart(container_id)
 
 @app.post('/api/container/stop/:container_id')
 def stop_container(container_id, user):
-    has = store.user_container.find_by_id(user['user_id'], container_id)
+    has = models.UserContainer.find_by_id(user['user_id'], container_id)
     if has:
         container.stop(container_id)
 
 @app.get('/api/container/:container_id/passwd')
 def container_passwd(container_id, user):
-    has = store.user_container.find_by_id(user['user_id'], container_id)
+    has = models.UserContainer.find_by_id(user['user_id'], container_id)
     if has:
         return container.get_container_passwd(container_id)
     return ''

@@ -1,5 +1,4 @@
 import logging
-# import logging.config
 FORMAT = '%(asctime)-15s - %(message)s'
 docker_log = logging.getLogger('docker')
 docker_log.setLevel(logging.DEBUG)
@@ -8,19 +7,26 @@ ch = logging.StreamHandler()
 ch.setFormatter(formater)
 docker_log.addHandler(ch)
 
+FORMAT = '%(asctime)-15s - %(message)s'
+lee_log = logging.getLogger('lee')
+lee_log.setLevel(logging.DEBUG)
+formater = logging.Formatter(FORMAT)
+ch = logging.StreamHandler()
+ch.setFormatter(formater)
+lee_log.addHandler(ch)
+
 HOME_ROOT = '/'
 
 prefix = 'docker_'
 
-# use_mysql = True
-
-# mysql = {
-#     'host': '127.0.0.1',
-#     'user': 'lmj',
-#     'passwd': 'lmj',
-#     'db': 'docker',
-#     'port': 49154
-# }
+# database settings
+drivers = {
+    'path':'sqlite://run/%s/data.db'%prefix,
+    # 'path':'mysql://127.0.0.1:3306?db=&user=&passwd=',
+    'memcached': [],
+    'lru_cache': False,
+    'cache_timeout': 0
+}
 
 images = [
     {
