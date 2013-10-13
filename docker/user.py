@@ -9,7 +9,7 @@ def login(username, passwd):
         return {'err': '用户 {} 不存在'.format(username)}
     if user['passwd'] == md5sum(passwd):
         user.pop('passwd')
-        return user
+        return user.copy()
     return {'err': '用户名密码错误'}
 
 
