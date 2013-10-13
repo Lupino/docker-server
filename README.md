@@ -1,6 +1,6 @@
 This repo provide a easy way for create container use the custem images base
 docker, every container has less two export ports.
-if use for the private cloud or other.
+it use for the private cloud or other.
 
 Usage:
 ------
