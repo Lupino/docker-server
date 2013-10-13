@@ -8,6 +8,13 @@ Usage:
     mv config.sample.py config.py
     python3 main.py
 
+Build the base images
+---------------------
+
+    cd images/ubuntu-server
+    docker build -t lupino/ubuntu .
+    # then edit the config.py add the images
+
 Requirements
 -----------
 
