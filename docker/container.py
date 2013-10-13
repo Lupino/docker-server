@@ -8,7 +8,7 @@ def create(image):
     port = models.seq.next('container_export_port')
     if port < 49153:
         port = 49152 + port
-        models.seq.update('container_export_port', port)
+        models.seq.save('container_export_port', port)
 
     info = {}
     if image.get('ssh_port'):
