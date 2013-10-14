@@ -35,5 +35,12 @@ images = [
         'server_port': 80,
         'name': 'Ubuntu 12.04',
         'cmd': ['/bin/bash', '/src/startup.sh'],
+    },
+    {
+        'image_id': 'lupino/lnmp',
+        'ssh_port': '22',
+        'server_port': 80,
+        'name': 'Ubuntu 12.04 lnmp',
+        'cmd': ['/usr/local/bin/run'],
     }
 ]
