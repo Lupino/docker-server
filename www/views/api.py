@@ -27,6 +27,7 @@ def user_create_container(user):
     if not container_id:
         return {'err': 'container create fail'}
     _container = models.Container.find_by_id(container_id)
+    _container = _container.copy()
     _container.update({'user_id': user['user_id']})
     return json.dumps(_container)
 

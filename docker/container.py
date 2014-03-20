@@ -37,7 +37,7 @@ def create(image):
     info['image_id'] = image['image_id']
     if container_id:
         now = int(time())
-        container_id = models.Container(info).save()
+        models.Container(info).save()
 
     return container_id
 
@@ -70,7 +70,7 @@ def get_container_passwd(container_id):
     p = os.popen(' '.join(cmd))
     passwd = p.read().strip()
     if passwd:
-        container_id = models.Container({
+        models.Container({
             'container_id': container_id,
             'passwd': passwd,
         }).save()
