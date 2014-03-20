@@ -5,7 +5,7 @@ __license__ = 'MIT'
 ### CUT HERE (see setup.py)
 
 import inspect
-from .bottle import request, redirect, PluginError
+from bottle import request, redirect, PluginError
 
 
 class LoginPlugin(object):

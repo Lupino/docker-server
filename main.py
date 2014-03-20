@@ -4,6 +4,6 @@ import config
 lee.connect(**config.drivers)
 
 from www import server
-from www.bottle import run
+from bottle import run
 
-run(server, server = 'www.asyncbottle:TulipServer')
+run(server, server = 'aiobottle:AsyncServer')
