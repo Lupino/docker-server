@@ -18,17 +18,15 @@ Build the base images
 Requirements
 -----------
 
-Python 3.3
+Python >= 3.3
 
-tulip <http://code.google.com/p/tulip>
-
-asynchttp <https://github.com/fafhrd91/asynchttp>
+asyncio <http://code.google.com/p/tulip>
 
 bottle <http://bottlepy.org>
 
-asyncbottle <https://github.com/Lupino/asyncbottle.git>
+aiobottle <https://github.com/Lupino/aiobottle.git>
 
-lee <https://github.com/Lupino/lee.git>
+lee <https://github.com/Lupino/lee.git> a orm auto create tables on base sqlite3  or mysql
 
 beaker <http://beaker.readthedocs.org/en/latest/>
 
