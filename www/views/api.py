@@ -18,7 +18,8 @@ def user_login():
 
 @app.route('/api/user/containers')
 def user_containers(user):
-    return json.dumps(_user.get_containers(user['user_id']).copy())
+    containers = [container.copy() for container in _user.get_containers(user['user_id'])]
+    return json.dumps(containers)
 
 @app.post('/api/user/create/container')
 def user_create_container(user):
