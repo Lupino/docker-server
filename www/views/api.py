@@ -61,17 +61,23 @@ def start_container(container_id, user):
     if has:
         container.start(container_id)
 
+    return {}
+
 @app.post('/api/container/restart/:container_id')
 def restart_container(container_id, user):
     has = models.UserContainer.find_by_id(user['user_id'], container_id)
     if has:
         container.restart(container_id)
 
+    return {}
+
 @app.post('/api/container/stop/:container_id')
 def stop_container(container_id, user):
     has = models.UserContainer.find_by_id(user['user_id'], container_id)
     if has:
         container.stop(container_id)
+
+    return ''
 
 @app.get('/api/container/:container_id/passwd')
 def container_passwd(container_id, user):
